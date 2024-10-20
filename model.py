@@ -2,7 +2,7 @@ from ultralytics import YOLO
 
 if __name__ == "__main__":
     # Load a model
-    model = YOLO(r"runs\detect\train3\weights\best.pt")
+    model = YOLO(r"runs\detect\train7\weights\best.pt")
 
     # Evaluate model performance on the validation set
     metrics = model.val()
