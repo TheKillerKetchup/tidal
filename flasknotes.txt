@@ -1,0 +1,19 @@
+127.0.0.1 - - [19/Oct/2024 17:32:28] "POST /detect HTTP/1.1" 200 -
+
+0: 320x640 (no detections), 58.1ms
+Speed: 2.4ms preprocess, 58.1ms inference, 0.7ms postprocess per image at shape (1, 3, 320, 640)
+ultralytics.engine.results.Boxes object with attributes:
+
+cls: tensor([])
+conf: tensor([])
+data: tensor([], size=(0, 6))
+id: None
+is_track: False
+orig_shape: (429, 889)
+shape: torch.Size([0, 6])
+xywh: tensor([], size=(0, 4))
+xywhn: tensor([], size=(0, 4))
+xyxy: tensor([], size=(0, 4))
+xyxyn: tensor([], size=(0, 4))
+
+?? is xyxy the bounding boxes? try on real model! this may actually lwokey work wtf
