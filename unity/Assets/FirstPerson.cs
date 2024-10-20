@@ -29,9 +29,9 @@ public class FPS : MonoBehaviour
     {
         HandleLook();
         HandleMovement();
-        lookAtTrash();
+
     }
-    void lookAtTrash()
+    /*void lookAtTrash()
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -43,7 +43,7 @@ public class FPS : MonoBehaviour
 
         // Rotate towards the target position if needed
 
-    }
+    }*/
     void LookAtTarget()
     {
         // Convert screen position to world position
