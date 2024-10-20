@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+using System.Collections;
 using System.IO;
+using UnityEngine;
 using UnityEngine.Networking;  // For sending HTTP requests
-using System.Text.Json;
 
 public class YOLOCameraCapture : MonoBehaviour
 {
@@ -66,14 +68,17 @@ public class YOLOCameraCapture : MonoBehaviour
             else
             {
                 // Process the response (bounding box data)
+                Debug.Log("Response: " + www.downloadHandler.text);
 
                 // Parse and handle bounding boxes from the response
                 HandleBoundingBoxResponse(www.downloadHandler.text);
             }
         }
     }
-
+    public MovingToTrash movingtotrash;
     void HandleBoundingBoxResponse(string jsonResponse)
+
+
     {
         currentBoundingBoxes = new List<GameObject>();
         // Parse the JSON response to extract bounding box information
