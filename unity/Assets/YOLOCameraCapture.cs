@@ -80,12 +80,17 @@ public class YOLOCameraCapture : MonoBehaviour
 
 
     {
+        foreach (GameObject BoundingBox in currentBoundingBoxes)
+        {
+            Destroy(BoundingBox);
+        }
         currentBoundingBoxes = new List<GameObject>();
+
         // Parse the JSON response to extract bounding box information
         // and update the UI or overlay in Unity.
         //Debug.Log("Bounding boxes: " + jsonResponse);
         BoundingBoxList boundingBoxList = JsonUtility.FromJson<BoundingBoxList>(jsonResponse);
-        for(int i = 0;i < boundingBoxList.boxes.Length; i++)
+        for (int i = 0; i < boundingBoxList.boxes.Length; i++)
         {
             BoundingBox bounding_box = boundingBoxList.boxes[i];
             DrawBoundingBox(bounding_box.x1, bounding_box.y1, bounding_box.x2, bounding_box.y2, i);
@@ -103,7 +108,7 @@ public class YOLOCameraCapture : MonoBehaviour
         Vector3 size = topRight - bottomLeft;
 
         // If no bounding box exists, create one
-        if(currentBoundingBoxes.Count <= i)
+        if (currentBoundingBoxes.Count <= i)
         {
             currentBoundingBoxes.Add(Instantiate(boundingBoxPrefab, panel.transform));
         }

@@ -10,12 +10,14 @@ public class AI : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private Transform target2;
     [SerializeField] private Transform target3;
+
     public Vector3 startingPosition;
     public Quaternion startingRotation;
     void Start()
     {
         startingPosition = transform.position;
         startingRotation = transform.rotation;
+        agent.speed = 1f;
     }
     private void OnTriggerEnter(Collider other)
     {
