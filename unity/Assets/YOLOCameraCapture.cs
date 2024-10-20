@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-using System.Collections;
 using System.IO;
-using UnityEngine;
 using UnityEngine.Networking;  // For sending HTTP requests
+using System.Text.Json;
 
 public class YOLOCameraCapture : MonoBehaviour
 {
     public Camera cameraToCapture;
     private Texture2D screenShot;
+    public GameObject boundingBoxPrefab;
+    private List<GameObject> currentBoundingBoxes;
 
     void Start()
     {
@@ -64,7 +64,6 @@ public class YOLOCameraCapture : MonoBehaviour
             else
             {
                 // Process the response (bounding box data)
-                Debug.Log("Response: " + www.downloadHandler.text);
 
                 // Parse and handle bounding boxes from the response
                 HandleBoundingBoxResponse(www.downloadHandler.text);
@@ -77,5 +76,45 @@ public class YOLOCameraCapture : MonoBehaviour
         // Parse the JSON response to extract bounding box information
         // and update the UI or overlay in Unity.
         Debug.Log("Bounding boxes: " + jsonResponse);
+        BoundingBoxList boundingBoxList = JsonUtility.FromJson<BoundingBoxList>(jsonResponse);
+        for(int i = 0;i < boundingBoxList.boxes.Count; i++)
+        {
+            BoundingBox bounding_box = boundingBoxList.boxes[i];
+            DrawBoundingBox(bounding_box.x1, bounding_box.y1, bounding_box.x2, bounding_box.y2, i);
+
+        }
+        Debug.Log("Bounding box data: " + boundingBoxList);
     }
+    void DrawBoundingBox(float x_min_n, float y_min_n, float x_max_n, float y_max_n, int i)
+    {
+        // Convert the received bounding box to Viewport space (0 to 1 range)
+        Vector3 bottomLeft = cameraToCapture.ScreenToViewportPoint(new Vector3(x_min_n * Screen.width, y_min_n * Screen.height, cameraToCapture.nearClipPlane));
+        Vector3 topRight = cameraToCapture.ScreenToViewportPoint(new Vector3(x_max_n * Screen.width, y_max_n * Screen.height, cameraToCapture.nearClipPlane));
+
+        // Calculate center and size of the bounding box
+        Vector3 center = (bottomLeft + topRight) / 2;
+        Vector3 size = topRight - bottomLeft;
+
+        // If no bounding box exists, create one -> this is moot no?
+        if (currentBoundingBoxes[i] == null)
+        {
+            currentBoundingBoxes.Add(Instantiate(boundingBoxPrefab));
+        }
+
+        // Set position and size of the bounding box
+        RectTransform rectTransform = currentBoundingBoxes[i].GetComponent<RectTransform>();
+        rectTransform.anchorMin = bottomLeft;
+        rectTransform.anchorMax = topRight;
+        rectTransform.sizeDelta = new Vector2(size.x, size.y);
+    }
+}
+public class BoundingBox
+{
+    public float x1, y1, x2, y2;
+}
+
+[System.Serializable]
+public class BoundingBoxList
+{
+    public List<BoundingBox> boxes;
 }
