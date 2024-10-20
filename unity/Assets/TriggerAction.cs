@@ -10,14 +10,14 @@ public class TriggerAction : MonoBehaviour
         if (other.CompareTag("Target")) // Make sure your target has the tag "Target"
         {
             // Call your action here
-            StopMovement();
+            //StopMovement();
         }
     }
 
     private void PerformAction()
     {
         // Action to perform when entering the trigger
-        other.
+        //other.
         // Add your custom logic here
     }
 }

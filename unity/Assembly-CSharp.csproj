@@ -59,9 +59,15 @@
     <Analyzer Include="/Users/kingisaac/Library/Mobile Documents/com~apple~CloudDocs/2022.3.11f1-x86_64/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets/UpdatingScreen.cs" />
+    <Compile Include="Assets/TriggerAction.cs" />
     <Compile Include="Assets/TutorialInfo/Scripts/Readme.cs" />
     <Compile Include="Assets/TrashSpawner.cs" />
+    <Compile Include="Assets/DestroyClones.cs" />
     <Compile Include="Assets/YOLOCameraCapture.cs" />
+    <Compile Include="Assets/MovingToTrash.cs" />
+    <Compile Include="Assets/FirstPerson.cs" />
+    <Compile Include="Assets/t.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

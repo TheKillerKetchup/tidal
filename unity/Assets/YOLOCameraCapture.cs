@@ -10,10 +10,12 @@ public class YOLOCameraCapture : MonoBehaviour
     public Camera cameraToCapture;
     private Texture2D screenShot;
     public GameObject boundingBoxPrefab;
+    public GameObject panel;
     private List<GameObject> currentBoundingBoxes;
 
     void Start()
     {
+        currentBoundingBoxes = new List<GameObject>();
         StartCoroutine(CaptureAndSendImage());
     }
 
@@ -73,17 +75,17 @@ public class YOLOCameraCapture : MonoBehaviour
 
     void HandleBoundingBoxResponse(string jsonResponse)
     {
+        currentBoundingBoxes = new List<GameObject>();
         // Parse the JSON response to extract bounding box information
         // and update the UI or overlay in Unity.
-        Debug.Log("Bounding boxes: " + jsonResponse);
+        //Debug.Log("Bounding boxes: " + jsonResponse);
         BoundingBoxList boundingBoxList = JsonUtility.FromJson<BoundingBoxList>(jsonResponse);
-        for(int i = 0;i < boundingBoxList.boxes.Count; i++)
+        for(int i = 0;i < boundingBoxList.boxes.Length; i++)
         {
             BoundingBox bounding_box = boundingBoxList.boxes[i];
             DrawBoundingBox(bounding_box.x1, bounding_box.y1, bounding_box.x2, bounding_box.y2, i);
-
         }
-        Debug.Log("Bounding box data: " + boundingBoxList);
+        //Debug.Log("Bounding box data: " + boundingBoxList);
     }
     void DrawBoundingBox(float x_min_n, float y_min_n, float x_max_n, float y_max_n, int i)
     {
@@ -95,19 +97,26 @@ public class YOLOCameraCapture : MonoBehaviour
         Vector3 center = (bottomLeft + topRight) / 2;
         Vector3 size = topRight - bottomLeft;
 
-        // If no bounding box exists, create one -> this is moot no?
-        if (currentBoundingBoxes[i] == null)
+        // If no bounding box exists, create one
+        if(currentBoundingBoxes.Count <= i)
         {
-            currentBoundingBoxes.Add(Instantiate(boundingBoxPrefab));
+            currentBoundingBoxes.Add(Instantiate(boundingBoxPrefab, panel.transform));
+        }
+        else if (currentBoundingBoxes[i] == null)
+        {
+            currentBoundingBoxes[i] = Instantiate(boundingBoxPrefab, panel.transform);
         }
 
         // Set position and size of the bounding box
+        Debug.Log(currentBoundingBoxes[i]);
         RectTransform rectTransform = currentBoundingBoxes[i].GetComponent<RectTransform>();
         rectTransform.anchorMin = bottomLeft;
         rectTransform.anchorMax = topRight;
         rectTransform.sizeDelta = new Vector2(size.x, size.y);
+        Debug.Log(rectTransform.anchorMin + " " + rectTransform.anchorMax);
     }
 }
+[System.Serializable]
 public class BoundingBox
 {
     public float x1, y1, x2, y2;
@@ -116,5 +125,5 @@ public class BoundingBox
 [System.Serializable]
 public class BoundingBoxList
 {
-    public List<BoundingBox> boxes;
+    public BoundingBox[] boxes;
 }

@@ -31,7 +31,7 @@ def detect():
     results = model(img_np)
 
     # Get bounding boxes
-    dummy ={
+    dummy = {
         "boxes":[
             {"x1": 0.5052, "y1": 0.5763, "x2": 0.0088, "y2": 0.0446},
             {"x1": 0.5, "y1": 0.5, "x2": 0.7, "y2": 0.7},
